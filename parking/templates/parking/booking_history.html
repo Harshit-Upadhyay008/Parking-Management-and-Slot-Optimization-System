@@ -1,0 +1,81 @@
+{% extends 'parking/base.html' %}
+
+{% block title %}Booking History - Smart Parking System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-history"></i> Booking History</h1>
+        <p>View all your past and current bookings.</p>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <a href="{% url 'booking_history' %}" class="filter-btn {% if not status_filter %}active{% endif %}">All</a>
+        <a href="{% url 'booking_history' %}?status=active" class="filter-btn {% if status_filter == 'active' %}active{% endif %}">Active</a>
+        <a href="{% url 'booking_history' %}?status=completed" class="filter-btn {% if status_filter == 'completed' %}active{% endif %}">Completed</a>
+        <a href="{% url 'booking_history' %}?status=cancelled" class="filter-btn {% if status_filter == 'cancelled' %}active{% endif %}">Cancelled</a>
+        <a href="{% url 'booking_history' %}?status=expired" class="filter-btn {% if status_filter == 'expired' %}active{% endif %}">Expired</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            {% if bookings %}
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Slot</th>
+                            <th>Floor</th>
+                            <th>Vehicle</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Duration</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td><a href="{% url 'booking_detail' booking.booking_id %}"><strong>{{ booking.booking_id }}</strong></a></td>
+                            <td>{{ booking.slot.slot_number }}</td>
+                            <td>{{ booking.slot.floor.name }}</td>
+                            <td>{{ booking.vehicle.license_plate }}</td>
+                            <td>{{ booking.check_in|date:"M d, H:i" }}</td>
+                            <td>{% if booking.check_out %}{{ booking.check_out|date:"M d, H:i" }}{% else %}<span style="color: #f59e0b;">Ongoing</span>{% endif %}</td>
+                            <td>
+                                {% if booking.status == 'active' %}
+                                    {{ booking.expected_hours }} hrs
+                                {% else %}
+                                    {{ booking.total_hours }} hrs
+                                {% endif %}
+                            </td>
+                            <td><strong>Rs.{{ booking.total_amount }}</strong></td>
+                            <td><span class="badge badge-{{ booking.status }}">{{ booking.get_status_display }}</span></td>
+                            <td>
+                                {% if booking.status == 'active' %}
+                                <a href="{% url 'checkout_booking' booking.booking_id %}" class="btn btn-success btn-sm">Checkout</a>
+                                {% else %}
+                                <a href="{% url 'booking_detail' booking.booking_id %}" class="btn btn-sm" style="background: #e2e8f0; color: #475569;">View</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-calendar-times"></i>
+                <h3>No Bookings Found</h3>
+                <p>{% if status_filter %}No {{ status_filter }} bookings found.{% else %}You haven't made any bookings yet.{% endif %}</p>
+                <a href="{% url 'book_slot' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Book a Slot</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

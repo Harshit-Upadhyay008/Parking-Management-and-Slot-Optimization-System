@@ -1,0 +1,110 @@
+{% extends 'parking/base.html' %}
+
+{% block title %}Book a Slot - Smart Parking System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-ticket-alt"></i> Book a Parking Slot</h1>
+        <p>Select your vehicle, choose an available slot, and set your parking duration.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; align-items: start;">
+        <!-- Booking Form -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-edit"></i> Booking Form</h3>
+            </div>
+            <div class="card-body">
+                {% if form.vehicle.field.queryset.count == 0 %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    You need to add a vehicle first before booking.
+                    <a href="{% url 'add_vehicle' %}" style="margin-left: 10px; font-weight: 700;">Add Vehicle &rarr;</a>
+                </div>
+                {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label><i class="fas fa-car"></i> Select Vehicle</label>
+                        {{ form.vehicle }}
+                        {% if form.vehicle.errors %}
+                        <div class="form-error">{{ form.vehicle.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-parking"></i> Select Slot</label>
+                        {{ form.slot }}
+                        {% if form.slot.errors %}
+                        <div class="form-error">{{ form.slot.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-clock"></i> Duration (Hours)</label>
+                        {{ form.expected_hours }}
+                        {% if form.expected_hours.errors %}
+                        <div class="form-error">{{ form.expected_hours.errors.0 }}</div>
+                        {% endif %}
+                        <div class="form-help">Minimum 1 hour, Maximum 24 hours</div>
+                    </div>
+
+                    <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #86efac;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 600; color: #166534;">
+                                <i class="fas fa-receipt"></i> Estimated Cost:
+                            </span>
+                            <span id="estimated-cost" style="font-size: 1.3rem; font-weight: 800; color: #166534;">Rs. 50.00</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-check"></i> Confirm Booking
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Available Slots -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-list"></i> Available Slots</h3>
+            </div>
+            <div class="card-body">
+                {% if available_slots %}
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Slot</th>
+                                <th>Floor</th>
+                                <th>Type</th>
+                                <th>Rate/hr</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for slot in available_slots %}
+                            <tr>
+                                <td><strong>{{ slot.slot_number }}</strong></td>
+                                <td>{{ slot.floor.name }}</td>
+                                <td><span class="badge badge-available">{{ slot.get_slot_type_display }}</span></td>
+                                <td>Rs.{{ slot.hourly_rate }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-parking"></i>
+                    <h3>No Slots Available</h3>
+                    <p>All parking slots are currently occupied. Please try again later.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

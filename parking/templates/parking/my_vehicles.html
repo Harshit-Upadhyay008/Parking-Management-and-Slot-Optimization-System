@@ -1,0 +1,53 @@
+{% extends 'parking/base.html' %}
+
+{% block title %}My Vehicles - Smart Parking System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: start;">
+        <div>
+            <h1><i class="fas fa-car"></i> My Vehicles</h1>
+            <p>Manage your registered vehicles.</p>
+        </div>
+        <a href="{% url 'add_vehicle' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Vehicle
+        </a>
+    </div>
+
+    {% if vehicles %}
+    <div class="vehicle-grid">
+        {% for vehicle in vehicles %}
+        <div class="vehicle-card">
+            <div class="v-icon">
+                <i class="fas {% if vehicle.vehicle_type == 'motorcycle' %}fa-motorcycle{% elif vehicle.vehicle_type == 'truck' %}fa-truck{% elif vehicle.vehicle_type == 'ev' %}fa-charging-station{% else %}fa-car{% endif %}"></i>
+            </div>
+            <div>
+                <h4>{{ vehicle.license_plate }}</h4>
+                <div class="v-detail">{{ vehicle.make }} {{ vehicle.model }}</div>
+                <div class="v-detail">{{ vehicle.get_vehicle_type_display }} &bull; {{ vehicle.color }}</div>
+                <div class="v-actions">
+                    <a href="{% url 'edit_vehicle' vehicle.id %}" class="btn btn-sm" style="background: #dbeafe; color: #2563eb;">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="{% url 'delete_vehicle' vehicle.id %}" class="btn btn-sm" style="background: #fee2e2; color: #dc2626;">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card">
+        <div class="card-body">
+            <div class="empty-state">
+                <i class="fas fa-car"></i>
+                <h3>No Vehicles Registered</h3>
+                <p>Add your first vehicle to start booking parking slots.</p>
+                <a href="{% url 'add_vehicle' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Vehicle</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

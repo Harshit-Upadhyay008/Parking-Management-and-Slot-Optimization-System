@@ -1,0 +1,144 @@
+{% extends 'parking/base.html' %}
+{% load static %}
+
+{% block title %}Smart Parking System - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content animate-fade">
+        <h1>Smart <span>Parking</span> System</h1>
+        <p>Find, book, and manage parking spaces with ease. Real-time availability, instant booking, and hassle-free checkout.</p>
+        <div class="hero-buttons">
+            {% if user.is_authenticated %}
+                <a href="{% url 'parking_map' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-map-marked-alt"></i> View Parking Map
+                </a>
+                <a href="{% url 'book_slot' %}" class="btn btn-outline btn-lg">
+                    <i class="fas fa-ticket-alt"></i> Book a Slot
+                </a>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus"></i> Get Started
+                </a>
+                <a href="{% url 'login' %}" class="btn btn-outline btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card animate-fade">
+            <div class="stat-icon blue">
+                <i class="fas fa-parking"></i>
+            </div>
+            <h3 data-target="{{ total_slots }}">{{ total_slots }}</h3>
+            <p>Total Parking Slots</p>
+        </div>
+        <div class="stat-card animate-fade">
+            <div class="stat-icon green">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 data-target="{{ available_slots }}">{{ available_slots }}</h3>
+            <p>Available Right Now</p>
+        </div>
+        <div class="stat-card animate-fade">
+            <div class="stat-icon orange">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3 data-target="{{ total_users }}">{{ total_users }}</h3>
+            <p>Registered Users</p>
+        </div>
+        <div class="stat-card animate-fade">
+            <div class="stat-icon purple">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <h3 data-target="{{ total_bookings }}">{{ total_bookings }}</h3>
+            <p>Total Bookings</p>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="section-title">
+        <h2>Why Choose SmartPark?</h2>
+        <p>Our intelligent parking management system offers a complete solution</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card animate-fade">
+            <div class="icon" style="background: #dbeafe; color: #2563eb;">
+                <i class="fas fa-clock"></i>
+            </div>
+            <h3>Real-Time Availability</h3>
+            <p>Check parking slot availability in real-time with our interactive parking map. No more driving around looking for spots.</p>
+        </div>
+        <div class="feature-card animate-fade">
+            <div class="icon" style="background: #dcfce7; color: #16a34a;">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3>Easy Online Booking</h3>
+            <p>Book your parking slot in advance from anywhere. Select your preferred slot, duration, and vehicle - all in a few clicks.</p>
+        </div>
+        <div class="feature-card animate-fade">
+            <div class="icon" style="background: #fef3c7; color: #f59e0b;">
+                <i class="fas fa-calculator"></i>
+            </div>
+            <h3>Automatic Billing</h3>
+            <p>Automatic fee calculation based on parking duration. Transparent pricing with no hidden charges.</p>
+        </div>
+        <div class="feature-card animate-fade">
+            <div class="icon" style="background: #f3e8ff; color: #7c3aed;">
+                <i class="fas fa-car"></i>
+            </div>
+            <h3>Vehicle Management</h3>
+            <p>Register multiple vehicles and manage them from your dashboard. Quick booking with saved vehicle details.</p>
+        </div>
+        <div class="feature-card animate-fade">
+            <div class="icon" style="background: #fce7f3; color: #ec4899;">
+                <i class="fas fa-chart-bar"></i>
+            </div>
+            <h3>Analytics Dashboard</h3>
+            <p>Comprehensive admin dashboard with real-time analytics, booking history, and revenue tracking.</p>
+        </div>
+        <div class="feature-card animate-fade">
+            <div class="icon" style="background: #ccfbf1; color: #14b8a6;">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Secure & Reliable</h3>
+            <p>Your data is safe with us. Secure authentication, encrypted payments, and reliable service uptime.</p>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section style="padding: 60px 2rem; background: white;">
+    <div style="max-width: 1000px; margin: 0 auto;">
+        <div class="section-title">
+            <h2>How It Works</h2>
+            <p>Get started in 3 simple steps</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; text-align: center;">
+            <div>
+                <div style="width: 70px; height: 70px; background: #dbeafe; color: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; margin: 0 auto 15px;">1</div>
+                <h3 style="margin-bottom: 8px; color: #1e293b;">Register & Add Vehicle</h3>
+                <p style="color: #64748b; font-size: 0.9rem;">Create your account and register your vehicle details for quick bookings.</p>
+            </div>
+            <div>
+                <div style="width: 70px; height: 70px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; margin: 0 auto 15px;">2</div>
+                <h3 style="margin-bottom: 8px; color: #1e293b;">Find & Book a Slot</h3>
+                <p style="color: #64748b; font-size: 0.9rem;">Browse available slots on our interactive map and book your preferred spot.</p>
+            </div>
+            <div>
+                <div style="width: 70px; height: 70px; background: #fef3c7; color: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; margin: 0 auto 15px;">3</div>
+                <h3 style="margin-bottom: 8px; color: #1e293b;">Park & Checkout</h3>
+                <p style="color: #64748b; font-size: 0.9rem;">Park your vehicle and checkout when done. Payment is calculated automatically.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

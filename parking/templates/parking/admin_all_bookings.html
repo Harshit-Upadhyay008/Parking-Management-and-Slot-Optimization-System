@@ -1,0 +1,74 @@
+{% extends 'parking/base.html' %}
+
+{% block title %}All Bookings - Admin - Smart Parking System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-calendar"></i> All Bookings</h1>
+        <p>View and manage all system bookings.</p>
+    </div>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <a href="{% url 'admin_dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{% url 'admin_manage_slots' %}"><i class="fas fa-parking"></i> Manage Slots</a>
+            <a href="{% url 'admin_all_bookings' %}" class="active"><i class="fas fa-calendar"></i> All Bookings</a>
+            <a href="{% url 'admin_messages' %}"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="{% url 'admin:index' %}"><i class="fas fa-cog"></i> Django Admin</a>
+        </div>
+
+        <div>
+            <div class="filter-bar">
+                <a href="{% url 'admin_all_bookings' %}" class="filter-btn {% if not status_filter %}active{% endif %}">All</a>
+                <a href="{% url 'admin_all_bookings' %}?status=active" class="filter-btn {% if status_filter == 'active' %}active{% endif %}">Active</a>
+                <a href="{% url 'admin_all_bookings' %}?status=completed" class="filter-btn {% if status_filter == 'completed' %}active{% endif %}">Completed</a>
+                <a href="{% url 'admin_all_bookings' %}?status=cancelled" class="filter-btn {% if status_filter == 'cancelled' %}active{% endif %}">Cancelled</a>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    {% if bookings %}
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>User</th>
+                                    <th>Vehicle</th>
+                                    <th>Slot</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in bookings %}
+                                <tr>
+                                    <td><strong>{{ booking.booking_id }}</strong></td>
+                                    <td>{{ booking.user.get_full_name|default:booking.user.username }}</td>
+                                    <td>{{ booking.vehicle.license_plate }}</td>
+                                    <td>{{ booking.slot.slot_number }}</td>
+                                    <td>{{ booking.check_in|date:"M d, H:i" }}</td>
+                                    <td>{% if booking.check_out %}{{ booking.check_out|date:"M d, H:i" }}{% else %}<span style="color: #f59e0b;">Ongoing</span>{% endif %}</td>
+                                    <td>Rs.{{ booking.total_amount }}</td>
+                                    <td><span class="badge badge-{{ booking.status }}">{{ booking.get_status_display }}</span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>No Bookings Found</h3>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

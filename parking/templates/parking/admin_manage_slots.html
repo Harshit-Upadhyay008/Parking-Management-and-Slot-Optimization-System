@@ -1,0 +1,86 @@
+{% extends 'parking/base.html' %}
+
+{% block title %}Manage Slots - Admin - Smart Parking System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-parking"></i> Manage Parking Slots</h1>
+        <p>View and manage all parking slots across all floors.</p>
+    </div>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <a href="{% url 'admin_dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{% url 'admin_manage_slots' %}" class="active"><i class="fas fa-parking"></i> Manage Slots</a>
+            <a href="{% url 'admin_all_bookings' %}"><i class="fas fa-calendar"></i> All Bookings</a>
+            <a href="{% url 'admin_messages' %}"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="{% url 'admin:index' %}"><i class="fas fa-cog"></i> Django Admin</a>
+        </div>
+
+        <div>
+            <!-- Filters -->
+            <div class="filter-bar">
+                <a href="{% url 'admin_manage_slots' %}" class="filter-btn {% if not status_filter and not floor_filter %}active{% endif %}">All Slots</a>
+                <a href="{% url 'admin_manage_slots' %}?status=available" class="filter-btn {% if status_filter == 'available' %}active{% endif %}">Available</a>
+                <a href="{% url 'admin_manage_slots' %}?status=occupied" class="filter-btn {% if status_filter == 'occupied' %}active{% endif %}">Occupied</a>
+                <a href="{% url 'admin_manage_slots' %}?status=maintenance" class="filter-btn {% if status_filter == 'maintenance' %}active{% endif %}">Maintenance</a>
+            </div>
+
+            <!-- Slots Table -->
+            <div class="card">
+                <div class="card-body">
+                    {% if slots %}
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Slot Number</th>
+                                    <th>Floor</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Rate/hr</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for slot in slots %}
+                                <tr>
+                                    <td><strong>{{ slot.slot_number }}</strong></td>
+                                    <td>{{ slot.floor.name }}</td>
+                                    <td>{{ slot.get_slot_type_display }}</td>
+                                    <td><span class="badge badge-{{ slot.status }}">{{ slot.get_status_display }}</span></td>
+                                    <td>Rs.{{ slot.hourly_rate }}</td>
+                                    <td>
+                                        {% if slot.status == 'available' or slot.status == 'maintenance' %}
+                                        <a href="{% url 'admin_toggle_slot' slot.id %}" class="btn btn-sm {% if slot.status == 'available' %}btn-warning{% else %}btn-success{% endif %}">
+                                            {% if slot.status == 'available' %}
+                                            <i class="fas fa-wrench"></i> Maintenance
+                                            {% else %}
+                                            <i class="fas fa-check"></i> Activate
+                                            {% endif %}
+                                        </a>
+                                        {% else %}
+                                        <span style="color: #64748b; font-size: 0.85rem;">In use</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-parking"></i>
+                        <h3>No Slots Found</h3>
+                        <p>Use Django Admin to add parking floors and slots.</p>
+                        <a href="{% url 'admin:index' %}" class="btn btn-primary">Go to Django Admin</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

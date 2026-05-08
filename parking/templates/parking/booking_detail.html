@@ -1,0 +1,123 @@
+{% extends 'parking/base.html' %}
+
+{% block title %}Booking {{ booking.booking_id }} - Smart Parking System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-receipt"></i> Booking Details</h1>
+        <p>Booking ID: <strong>{{ booking.booking_id }}</strong></p>
+    </div>
+
+    <div style="max-width: 800px;">
+        <!-- Status Banner -->
+        <div style="background: {% if booking.status == 'active' %}#dcfce7{% elif booking.status == 'completed' %}#dbeafe{% elif booking.status == 'cancelled' %}#fee2e2{% else %}#e2e8f0{% endif %}; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;">
+            <span class="badge badge-{{ booking.status }}" style="font-size: 1rem; padding: 8px 20px;">
+                <i class="fas {% if booking.status == 'active' %}fa-clock{% elif booking.status == 'completed' %}fa-check-circle{% elif booking.status == 'cancelled' %}fa-times-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+                {{ booking.get_status_display }}
+            </span>
+            {% if booking.is_overdue %}
+            <div style="margin-top: 10px; color: #991b1b; font-weight: 700;">
+                <i class="fas fa-exclamation-triangle"></i> Overdue! Expected checkout time has passed.
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Booking Info -->
+        <div class="card" style="margin-bottom: 20px;">
+            <div class="card-header">
+                <h3><i class="fas fa-info-circle"></i> Booking Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="booking-info">
+                    <div class="booking-info-item">
+                        <label>Booking ID</label>
+                        <span>{{ booking.booking_id }}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <label>Parking Slot</label>
+                        <span>{{ booking.slot.slot_number }} (Floor {{ booking.slot.floor.floor_number }})</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <label>Slot Type</label>
+                        <span>{{ booking.slot.get_slot_type_display }}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <label>Hourly Rate</label>
+                        <span>Rs.{{ booking.slot.hourly_rate }}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <label>Vehicle</label>
+                        <span>{{ booking.vehicle.license_plate }} - {{ booking.vehicle.make }} {{ booking.vehicle.model }}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <label>Check-in</label>
+                        <span>{{ booking.check_in|date:"M d, Y h:i A" }}</span>
+                    </div>
+                    {% if booking.check_out %}
+                    <div class="booking-info-item">
+                        <label>Check-out</label>
+                        <span>{{ booking.check_out|date:"M d, Y h:i A" }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="booking-info-item">
+                        <label>Booked Duration</label>
+                        <span>{{ booking.expected_hours }} hours</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <label>{% if booking.check_out %}Actual Duration{% else %}Elapsed Time{% endif %}</label>
+                        <span>{{ booking.total_hours }} hours</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Info -->
+        {% if payment %}
+        <div class="card" style="margin-bottom: 20px;">
+            <div class="card-header">
+                <h3><i class="fas fa-credit-card"></i> Payment Details</h3>
+            </div>
+            <div class="card-body">
+                <div class="booking-info">
+                    <div class="booking-info-item">
+                        <label>Payment ID</label>
+                        <span>{{ payment.payment_id }}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <label>Amount</label>
+                        <span style="font-size: 1.3rem; font-weight: 800; color: #166534;">Rs.{{ payment.amount }}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <label>Method</label>
+                        <span>{{ payment.get_payment_method_display }}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <label>Status</label>
+                        <span class="badge badge-{{ payment.status }}">{{ payment.get_status_display }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Actions -->
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            {% if booking.status == 'active' %}
+            <a href="{% url 'checkout_booking' booking.booking_id %}" class="btn btn-success">
+                <i class="fas fa-sign-out-alt"></i> Checkout
+            </a>
+            <a href="{% url 'cancel_booking' booking.booking_id %}" class="btn btn-danger">
+                <i class="fas fa-times"></i> Cancel Booking
+            </a>
+            {% endif %}
+            <a href="{% url 'booking_history' %}" class="btn" style="background: #e2e8f0; color: #475569;">
+                <i class="fas fa-arrow-left"></i> All Bookings
+            </a>
+            <a href="{% url 'dashboard' %}" class="btn" style="background: #e2e8f0; color: #475569;">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

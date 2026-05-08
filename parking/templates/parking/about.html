@@ -1,0 +1,97 @@
+{% extends 'parking/base.html' %}
+
+{% block title %}About Us - Smart Parking System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="about-content">
+        <div class="page-header" style="text-align: center;">
+            <h1 style="justify-content: center;"><i class="fas fa-info-circle"></i> About Smart Parking System</h1>
+            <p>A Software Engineering Project</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 30px;">
+            <div class="card-body">
+                <h3 style="margin-bottom: 15px; color: #1e293b;"><i class="fas fa-bullseye" style="color: #2563eb;"></i> Project Overview</h3>
+                <p style="color: #64748b; line-height: 1.8; margin-bottom: 20px;">
+                    The <strong>Smart Parking System</strong> is an intelligent parking management solution developed as a Software Engineering course project. It addresses the growing challenge of urban parking by providing a digital platform for efficient parking space management, real-time availability tracking, and seamless booking experiences.
+                </p>
+
+                <h3 style="margin-bottom: 15px; color: #1e293b;"><i class="fas fa-cogs" style="color: #16a34a;"></i> Key Features</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                    <div style="padding: 15px; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #16a34a;">
+                        <strong>Real-Time Parking Map</strong><br>
+                        <span style="font-size: 0.85rem; color: #64748b;">Visual representation of all parking slots with live status updates.</span>
+                    </div>
+                    <div style="padding: 15px; background: #eff6ff; border-radius: 8px; border-left: 4px solid #2563eb;">
+                        <strong>Online Booking System</strong><br>
+                        <span style="font-size: 0.85rem; color: #64748b;">Book parking slots in advance with vehicle and duration selection.</span>
+                    </div>
+                    <div style="padding: 15px; background: #fefce8; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                        <strong>Automatic Billing</strong><br>
+                        <span style="font-size: 0.85rem; color: #64748b;">Automatic fee calculation based on actual parking duration.</span>
+                    </div>
+                    <div style="padding: 15px; background: #faf5ff; border-radius: 8px; border-left: 4px solid #7c3aed;">
+                        <strong>Admin Dashboard</strong><br>
+                        <span style="font-size: 0.85rem; color: #64748b;">Comprehensive analytics and management tools for administrators.</span>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 15px; color: #1e293b;"><i class="fas fa-laptop-code" style="color: #7c3aed;"></i> Technology Stack</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Technology</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Backend Framework</td><td>Django (Python)</td></tr>
+                            <tr><td>Frontend</td><td>HTML5, CSS3, JavaScript</td></tr>
+                            <tr><td>CSS Framework</td><td>Custom CSS with responsive design</td></tr>
+                            <tr><td>Database</td><td>SQLite (Development) / PostgreSQL (Production)</td></tr>
+                            <tr><td>Icons</td><td>Font Awesome 6</td></tr>
+                            <tr><td>Architecture</td><td>MVC (Model-View-Controller) via Django MTV</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-users"></i> Project Team</h3>
+            </div>
+            <div class="card-body">
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="avatar"><i class="fas fa-user-graduate"></i></div>
+                        <h4>Upendra Prawal</h4>
+                        <p style="color: #64748b; font-size: 0.85rem;">Team Lead / Backend Developer</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="avatar"><i class="fas fa-user-graduate"></i></div>
+                        <h4>Harhsit Upadhyay</h4>
+                        <p style="color: #64748b; font-size: 0.85rem;">Frontend Developer</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="avatar"><i class="fas fa-user-graduate"></i></div>
+                        <h4>Adbhud Gaur</h4>
+                        <p style="color: #64748b; font-size: 0.85rem;">Database / Testing</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="avatar"><i class="fas fa-user-graduate"></i></div>
+                        <h4>Ansh Guglani</h4>
+                        <p style="color: #64748b; font-size: 0.85rem;">Documentation</p>
+                    </div>
+                </div>
+                <p style="text-align: center; color: #64748b; margin-top: 20px; font-size: 0.9rem;">
+                    <i class="fas fa-university"></i> Software Engineering Course Project - 2026
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

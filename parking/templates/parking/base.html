@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Smart Parking System{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'home' %}" class="navbar-brand">
+                <i class="fas fa-parking"></i>
+                SmartPark
+            </a>
+            <button class="navbar-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="navbar-nav" id="navMenu">
+                <li><a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{% url 'about' %}" {% if request.resolver_match.url_name == 'about' %}class="active"{% endif %}><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="{% url 'contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}><i class="fas fa-envelope"></i> Contact</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="{% url 'parking_map' %}" {% if request.resolver_match.url_name == 'parking_map' %}class="active"{% endif %}><i class="fas fa-map"></i> Parking Map</a></li>
+                    {% if user.is_staff %}
+                    <li><a href="{% url 'admin_dashboard' %}" {% if 'admin' in request.path %}class="active"{% endif %}><i class="fas fa-cog"></i> Admin</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i> {{ user.first_name|default:user.username }}</a></li>
+                    <li><a href="{% url 'logout' %}" class="btn-nav"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="btn-nav"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li><a href="{% url 'register' %}" class="btn-nav" style="background: #16a34a;"><i class="fas fa-user-plus"></i> Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div style="max-width: 1400px; margin: 15px auto; padding: 0 2rem;">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} animate-fade">
+            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}"></i>
+            {{ message }}
+            <button class="alert-close">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h4><i class="fas fa-parking"></i> SmartPark</h4>
+                <p>Smart Parking System is an intelligent solution for managing parking spaces efficiently. Built as a Software Engineering project.</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About Us</a>
+                <a href="{% url 'contact' %}">Contact</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                {% endif %}
+            </div>
+            <div>
+                <h4>Contact Info</h4>
+                <p><i class="fas fa-map-marker-alt"></i> DEI University, India</p>
+                <p><i class="fas fa-phone"></i> +91 8865886010</p>
+                <p><i class="fas fa-envelope"></i> goluprawal3@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Smart Parking System. Software Engineering Project.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

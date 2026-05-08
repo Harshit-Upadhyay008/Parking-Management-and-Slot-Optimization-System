@@ -1,0 +1,74 @@
+{% extends 'parking/base.html' %}
+
+{% block title %}Contact Us - Smart Parking System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header" style="text-align: center;">
+        <h1 style="justify-content: center;"><i class="fas fa-envelope"></i> Contact Us</h1>
+        <p>Have a question or feedback? Send us a message!</p>
+    </div>
+
+    <div style="max-width: 700px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
+            <div class="card" style="text-align: center;">
+                <div class="card-body">
+                    <i class="fas fa-map-marker-alt" style="font-size: 2rem; color: #2563eb; margin-bottom: 10px;"></i>
+                    <h4 style="font-size: 0.95rem; margin-bottom: 5px;">Address</h4>
+                    <p style="color: #64748b; font-size: 0.85rem;">DEI University, India</p>
+                </div>
+            </div>
+            <div class="card" style="text-align: center;">
+                <div class="card-body">
+                    <i class="fas fa-phone" style="font-size: 2rem; color: #16a34a; margin-bottom: 10px;"></i>
+                    <h4 style="font-size: 0.95rem; margin-bottom: 5px;">Phone</h4>
+                    <p style="color: #64748b; font-size: 0.85rem;">+91 8865886010</p>
+                </div>
+            </div>
+            <div class="card" style="text-align: center;">
+                <div class="card-body">
+                    <i class="fas fa-envelope" style="font-size: 2rem; color: #f59e0b; margin-bottom: 10px;"></i>
+                    <h4 style="font-size: 0.95rem; margin-bottom: 5px;">Email</h4>
+                    <p style="color: #64748b; font-size: 0.85rem;">goluprawal3@gmail.com</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-paper-plane"></i> Send Message</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Your Name</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}<div class="form-error">{{ form.name.errors.0 }}</div>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label>Your Email</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}<div class="form-error">{{ form.email.errors.0 }}</div>{% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}<div class="form-error">{{ form.subject.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        {{ form.message }}
+                        {% if form.message.errors %}<div class="form-error">{{ form.message.errors.0 }}</div>{% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
